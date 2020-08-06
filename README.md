@@ -1,0 +1,1 @@
+# prestashop-store-locations
