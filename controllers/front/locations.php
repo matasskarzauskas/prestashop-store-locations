@@ -4,7 +4,7 @@
  * <FileName> => validation.php
  * Format expected: <ModuleName><FileName>ModuleFrontController
  */
-class StorelocatorLocationsModuleFrontController extends ModuleFrontController
+class StorelocationsLocationsModuleFrontController extends ModuleFrontController
 {
     public function initContent()
     {
