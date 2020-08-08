@@ -1,7 +1,11 @@
 {extends file='page.tpl'}
 {block name='page_content'}
+{if !$stores}
+<h2>{l s='No stores to display' mod='storelocations'}</h2>
+{/if}
 <script>
 let map;
+{if $stores}
 function initMap() {
     var locations = [
     {foreach from=$stores item='i'}
@@ -31,19 +35,27 @@ function initMap() {
     }
 }
 </script>
+{/if}
+
     <div class="row">
     <div id="left-column" class="col-xs-12 col-sm-4 col-md-3">
+
+    
+    {if $stores}
     {foreach from=$stores item='i'}
         <h2>{$i.name}</h2>
         <p>{$i.address}</p>
     {/foreach}
+    {/if}
     </div>
     <div id="left-column" class="col-xs-12 col-sm-8 col-md-9">
+    {if $api_key}
         <div id="map" style="width:100%; height:500px;"></div>
             <script
             src="https://maps.googleapis.com/maps/api/js?key={$api_key}&callback=initMap&libraries=&v=weekly"
             defer
             ></script>
         </div>
+    {/if}
     </div>
 {/block}
