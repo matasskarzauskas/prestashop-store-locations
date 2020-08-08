@@ -3,8 +3,8 @@
     <name>storelocations</name>
     <displayName><![CDATA[Store locations]]></displayName>
     <version><![CDATA[1.0.0]]></version>
-    <description><![CDATA[Generate a Google map for all your stores.]]></description>
-    <author><![CDATA[Mattprest]]></author>
+    <description><![CDATA[Generate a Google map for all your stores in one page.]]></description>
+    <author><![CDATA[MSLT]]></author>
     <tab><![CDATA[seo]]></tab>
 	<confirmUninstall><![CDATA[Are you sure you want to uninstall this module?]]></confirmUninstall>
     <is_configurable>1</is_configurable>
