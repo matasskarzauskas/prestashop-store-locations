@@ -1,7 +1,4 @@
 <?php
-/*
-
-*/
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -15,25 +12,17 @@ class Storelocations extends Module{
         $this->name = 'storelocations';
         $this->tab = 'seo';
         $this->version = '1.0.0';
-        $this->author = 'Mattprest';
+        $this->author = 'MSLT';
         $this->need_instance = 0;
         $this->bootstrap = true;
         parent::__construct();
         $this->displayName = 'Store locations';
-        $this->description = $this->l('Generate a Google map store locator inside your contact page.');
+        $this->description = $this->l('Generate a Google map for all your stores in one page.');
         $this->ps_versions_compliancy = array(
             'min' => '1.7.1.0',
             'max' => _PS_VERSION_,
         );
-        $this->confirmUninstall = $this->l('Are you sure you want to uninstall this module?');
-
-        DB::getInstance()->execute("INSERT INTO '"._DB_PREFIX_."hook'
-          SET 'name'= 'mapHook',
-              'title'= 'Store locator hook',
-              'description'= 'Displays the store locator map.'
-        ");
-
-        
+        $this->confirmUninstall = $this->l('Are you sure you want to uninstall this module?');        
     }
 
     public function getContent()
@@ -41,17 +30,27 @@ class Storelocations extends Module{
         $output = null;
     
         if (Tools::isSubmit('submit'.$this->name)) {
-            $storelocator = strval(Tools::getValue('storelocator'));
+            $api_key = strval(Tools::getValue('SL_API_KEY'));
+            $lat = strval(Tools::getValue('SL_LAT'));
+            $long = strval(Tools::getValue('SL_LONG'));
     
             if (
-                !$storelocator ||
-                empty($storelocator) ||
-                !Validate::isGenericName($storelocator)
+                !$api_key ||
+                empty($api_key) ||
+                !Validate::isGenericName($api_key) ||
+                !$lat ||
+                empty($lat) ||
+                !Validate::isGenericName($lat) ||
+                !$long ||
+                empty($long) ||
+                !Validate::isGenericName($long)
             ) {
-                $output .= $this->displayError($this->l('Invalid Configuration value'));
+                $output .= $this->displayError($this->l('Please fill out all fields'));
             } else {
-                Configuration::updateValue('storelocator', $storelocator);
-                $output .= $this->displayConfirmation($this->l('Settings updated'));
+                Configuration::updateValue('SL_API_KEY', $api_key);
+                Configuration::updateValue('SL_LAT', $lat);
+                Configuration::updateValue('SL_LONG', $long);
+                $output .= $this->displayConfirmation($this->l('Configuration updated'));
             }
         }
         
@@ -62,18 +61,29 @@ class Storelocations extends Module{
     {
         // Get default language
         $defaultLang = (int)Configuration::get('PS_LANG_DEFAULT');
-
         // Init Fields form array
         $fieldsForm[0]['form'] = [
             'legend' => [
-                'title' => $this->l('Settings'),
+                'title' => $this->l('Map configuration'),
             ],
             'input' => [
                 [
                     'type' => 'text',
-                    'label' => $this->l('Configuration value'),
-                    'name' => 'storelocator',
+                    'label' => $this->l('Google API key'),
+                    'name' => 'SL_API_KEY',
                     'size' => 20,
+                    'required' => true
+                ],
+                [
+                    'type' => 'text',
+                    'label' => $this->l('Default latitude coordinates'),
+                    'name' => 'SL_LAT',
+                    'required' => true
+                ],
+                [
+                    'type' => 'text',
+                    'label' => $this->l('Default longitude coordinates'),
+                    'name' => 'SL_LONG',
                     'required' => true
                 ]
             ],
@@ -113,17 +123,12 @@ class Storelocations extends Module{
         ];
 
         // Load current value
-        $helper->fields_value['storelocator'] = Tools::getValue('storelocator', Configuration::get('storelocator'));
+        $helper->fields_value['SL_API_KEY'] = Tools::getValue('SL_API_KEY', Configuration::get('SL_API_KEY'));
+        $helper->fields_value['SL_LAT'] = Tools::getValue('SL_LAT', Configuration::get('SL_LAT'));
+        $helper->fields_value['SL_LONG'] = Tools::getValue('SL_LONG', Configuration::get('SL_LONG'));
+
 
         return $helper->generateForm($fieldsForm);
     }
-
-    public function hookMapHook($params)
-    {
-        echo "Hello World!";
-    }
-
 }
-
-
 ?>
