@@ -1,7 +1,9 @@
 ![GitHub Logo](/logo.png)
 # Prestashop Store Locations module (Prestashop 1.7+)
-
 Configure and display a Google map for your physical stores in Prestashop.
+
+![Generated static page](https://i.postimg.cc/GpScJDrJ/map.png)
+
 
 # Installation
 1. Download files in .zip
